@@ -1,6 +1,9 @@
 <template>
  <v-container fluid>
       <v-row dense>
+        <v-img
+          :src="sdhlogo"
+        ></v-img>
         <v-col
           v-for="card in cards"
           :key="card.title"
@@ -43,11 +46,18 @@
   export default {
     name: 'Mobile',
     data: () => ({
+      sdhlogo:require('@/assets/sdhlogo.png'),
       cards: [
         { title: 'Promo', subtitle: 'Paket Pasangan', text: 'Pembelian 2 unit lahan makam berdampingan', src: require('@/assets/pasangan.png'), flex: 12 },
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 12 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 12 },
+        { title: 'Promo', subtitle: 'Paket Family', text: 'Pembelian 10 unit lahan makam dalam 1 mansion', src: require('@/assets/family.png'), flex: 12 },
+        { title: 'Tipe Single', subtitle: 'Tipe Makam tanpa pembatas kanan dan kirinya', text: 'Tipe Makam tanpa pembatas kanan dan kirinya', src: require('@/assets/single.png'), flex: 12 },
       ],
     }),
   }
 </script>
+
+<style scoped>
+  body{
+    background-color: #F6EDD9;
+  }
+</style>
