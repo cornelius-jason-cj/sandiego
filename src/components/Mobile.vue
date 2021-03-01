@@ -38,20 +38,26 @@
               height="200px"
             >
               <v-carousel-item
-                v-for="(item,i) in cardData[0].images"
+                v-for="(item,i) in data.images"
                 :key="i"
                 :src="item.src"
               ></v-carousel-item>
             </v-carousel>
 
-            <v-card-action>
+            <v-card-title>{{this.data.title}}</v-card-title>
+            <v-card-text>
+              <div>{{this.data.text}}</div>
+            </v-card-text>
+
+            <v-card-actions>
               <v-btn
                 color="green"
                 text
+                @click="chatWhatsapp"
               >
                 Whatsapp
               </v-btn>
-            </v-card-action>
+            </v-card-actions>
           </v-card>
         </v-dialog>
       </v-row>
@@ -88,9 +94,29 @@
             {
               src: require('@/assets/peak.png')
             },
-          ]
+          ],
+          title:'Promo Pasangan',
+          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
         },
-        {id:2},
+        {
+          id:2,
+          images:[
+            {
+              src: require('@/assets/pasangan.png')
+            },
+            {
+              src: require('@/assets/family.png')
+            },
+            {
+              src: require('@/assets/single.png')
+            },
+            {
+              src: require('@/assets/peak.png')
+            },
+          ],
+          title:'Promo Paket Family',
+          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+        },
         {id:3},
         {id:4},
         {id:5},
@@ -102,6 +128,11 @@
       openCard(cardId) {
         this.dialog = true
         this.data = this.cardData.find(card => card.id === cardId)
+      },
+      chatWhatsapp(){
+        let text='Halo saya ingin membeli pemakaman sandiego'
+        let link = `https://wa.me/6287700788877?text=${text}`
+        window.open(`${link}`)
       }
     }
   }
