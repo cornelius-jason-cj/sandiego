@@ -1,7 +1,7 @@
 <template>
   <main>
     <section class="landing">
-      <v-row>
+      <!-- <v-row>
           <v-col cols="12" sm="6" md="6">
             <v-img
               class="logo"
@@ -18,7 +18,7 @@
             </ul>
           </v-col>
       </v-row>
-      
+       -->
 
       <v-row>
         <v-col col="12" sm="4" md="4">
@@ -39,13 +39,88 @@
         </v-col>
 
         <v-col col="12" sm="8" md="8" class="carousel-section">
-          <v-row>
-            <v-col col="12" md="1"></v-col>
-            <v-col col="12" md="10">
-              <v-img
-                :src="this.imgShow"
-                min-height="500"
-              ></v-img>
+          <v-row style="margin-top:40px">
+            <v-col col="12" md="11">
+              <div v-if="showData">
+                <v-row>
+                  <v-col cold=12 md="9">
+                    <div v-if="this.showDetails === 'Gallery'">
+                      <v-row>
+                        <v-col
+                          v-for="(image,i) in data.images"
+                          :key="i"
+                          class="d-flex child-flex"
+                          cols="3"
+                        >
+                          <v-img
+                            :src="image.src"
+                            aspext-ratio="1"
+                            class="grey lighten-2"
+                          ></v-img>
+                        </v-col>
+                      </v-row>
+                    </div>
+
+
+                    <div v-else-if="this.showDetails === 'Details'"></div>
+                    <div v-else-if="this.showDetails === 'Booking'"></div>
+                    <div v-else-if="this.showDetails === 'Maps'"></div>
+
+
+                    <div v-else>
+                      <v-row>
+                        <v-col
+                          v-for="(image,i) in data.images"
+                          :key="i"
+                          class="d-flex child-flex"
+                          cols="3"
+                        >
+                          <v-img
+                            :src="image.src"
+                            class="grey lighten-2"
+                          ></v-img>
+                        </v-col>
+                      </v-row>
+                    </div>
+
+                  </v-col>
+                  <v-col cold=12 md="3">
+                    <v-card
+                      class="mx-auto"
+                      height="560"
+                      color="#887456"
+                      elevation="0"
+                    >
+                      <v-list rounded color="#887456">
+                        <v-subheader style="font-size:18px; font-weight:bold; color:#FFEFCA">{{data.title}}</v-subheader>
+                        <v-list-item-group
+                          v-model="selectedItem"
+                          color="#FFEFCA"
+                        >
+                          <v-list-item
+                            v-for="(item, i) in items"
+                            :key="i"
+                            @click="showDetailType(item.text)"
+                          >
+                            <v-list-item-icon>
+                              <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                              <v-list-item-title v-text="item.text"></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </div>
+              <div v-else>
+                <v-img
+                  :src="this.imgShow"
+                  height="560"
+                ></v-img>
+              </div>
             </v-col>
             <v-col col="12" md="1"></v-col>
           </v-row>
@@ -57,16 +132,18 @@
                 <slide
                   v-for="(slide,i) in cards"
                   :index="i"
-                  :key="i"
+                  :key="slide.id"
                 >
-                  <template>
+                  <template slot-scope="{index, isCurrent, leftIndex, rightIndex}" >
+                    <v-card @click="openCard(slide.id)" height="100%">
                     <img
                       :data-index="index"
                       :class="{current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0)}"
                       :src="slide.src"
                       height="200"
                     />
-                    <h2>{{slide.title}}</h2>
+                    <v-card-title>{{slide.title}}</v-card-title>
+                    </v-card>
                   </template>
                 </slide>
               </carousel-3d>
@@ -122,6 +199,60 @@ export default {
         { id:5, title: 'Tipe Private', subtitle: 'Tipe makam yang dapat di isi 2 - 10 tipe single dan antar unit dibatasi dengan pembatas tembok atau tanaman', text: 'Luas Tanah 25.4 - 180m2', src: require('@/assets/private.png'), flex: 12 },
         { id:6, title: 'Tipe Peak', subtitle: 'Tipe makam paling eksklusif, bisa membangun gazebo dan aksesoris makam seperti patung dan bangku', text: 'Luas Tanah 40 - 222m2', src: require('@/assets/peak.png'), flex: 12 },
       ],
+    cardData: [
+        {
+          id:1,
+          images:[
+            {
+              src: require('@/assets/pasangan.png')
+            },
+            {
+              src: require('@/assets/family.png')
+            },
+            {
+              src: require('@/assets/single.png')
+            },
+            {
+              src: require('@/assets/peak.png')
+            },
+          ],
+          title:'Promo Paket Pasangan',
+          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+        },
+        {
+          id:2,
+          images:[
+            {
+              src: require('@/assets/pasangan.png')
+            },
+            {
+              src: require('@/assets/family.png')
+            },
+            {
+              src: require('@/assets/single.png')
+            },
+            {
+              src: require('@/assets/peak.png')
+            },
+          ],
+          title:'Promo Paket Family',
+          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+        },
+        {id:3},
+        {id:4},
+        {id:5},
+        {id:6},
+      ],
+      showData:false,
+      data:[],
+      selectedItem:0,
+      items:[
+        { text: 'Gallery', icon: 'mdi-panorama'},
+        { text: 'Details', icon: 'mdi-details'},
+        { text: 'Booking', icon: 'mdi-book-open'},
+        { text: 'Maps', icon: 'mdi-google-maps'},
+      ],
+      showDetails:''
   }),
   components: {
     Carousel3d,
@@ -143,10 +274,18 @@ export default {
       tl.fromTo(".detail-text",{ opacity: 0}, { opacity: 1, duration: 1 });
       tl.fromTo(".carousel-section",{ opacity: 0}, { opacity: 1, duration: 1 });
     },
-
-
     changeImage(item) {
       console.log(item)
+    },
+    openCard(cardId) {
+      this.data = this.cardData.find(card => card.id === cardId)
+      this.showData = true
+      console.log(this.data)
+    },
+    showDetailType(buttonName) {
+      console.log(buttonName)
+      this.showDetails=buttonName
+      console.log(this.showDetails)
     }
   }
 };
