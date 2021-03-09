@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main
-      v-if="$vuetify.breakpoint.width < 414"
+      v-if="$vuetify.breakpoint.width <= 1024"
     >
       <Mobile/>
     </v-main>
