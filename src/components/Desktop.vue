@@ -38,41 +38,40 @@
           </div>
         </v-col>
 
-        <v-col col="12" sm="7" md="7" class="carousel-section">
+        <v-col col="12" sm="8" md="8" class="carousel-section">
           <v-row>
-            <v-col col="12" sm="12" md="12">
+            <v-col col="12" md="1"></v-col>
+            <v-col col="12" md="10">
               <v-img
-                max-height="600"
                 :src="this.imgShow"
+                min-height="500"
               ></v-img>
             </v-col>
+            <v-col col="12" md="1"></v-col>
           </v-row>
           <v-row>
-            <v-col
-              col="12"
-              sm="3"
-              md="3"
-              v-for="(card,i) in cards"
-              :key="i"
-            >
-              <v-card
-                class="mx-auto"
-                max-width="344"
-                height="200"
-                @click="changeImage(card)"
-              >
-                <v-img
-                  :src="card.src"
-                  class="white--text align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
+            <v-col col="12" md="1"></v-col>
+          
+            <v-col col="12" md="10">
+              <carousel-3d>
+                <slide
+                  v-for="(slide,i) in cards"
+                  :index="i"
+                  :key="i"
                 >
-                </v-img>
-                <v-card-text>
-                  <div v-text="card.title"></div>
-                </v-card-text>
-              </v-card>
+                  <template>
+                    <img
+                      :data-index="index"
+                      :class="{current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0)}"
+                      :src="slide.src"
+                      height="200"
+                    />
+                    <h2>{{slide.title}}</h2>
+                  </template>
+                </slide>
+              </carousel-3d>
             </v-col>
+            <v-col col="12" md="1"></v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -110,10 +109,11 @@
 <script>
 
 import gsap from "gsap";
+import { Carousel3d, Slide } from 'vue-carousel-3d';
 
 export default {
   data:() => ({
-    imgShow: require('../assets/produk1.jpg'),
+    imgShow: require('../assets/backgroundSandiego.jpg'),
     cards: [
         { id:1, title: 'Promo-Paket Pasangan', text: 'Pembelian 2 unit lahan makam berdampingan', src: require('@/assets/pasangan.png'), flex: 12 },
         { id:2, title: 'Promo-Paket Family', text: 'Pembelian 10 unit lahan makam dalam 1 mansion', src: require('@/assets/family.png'), flex: 12 },
@@ -123,6 +123,10 @@ export default {
         { id:6, title: 'Tipe Peak', subtitle: 'Tipe makam paling eksklusif, bisa membangun gazebo dan aksesoris makam seperti patung dan bangku', text: 'Luas Tanah 40 - 222m2', src: require('@/assets/peak.png'), flex: 12 },
       ],
   }),
+  components: {
+    Carousel3d,
+    Slide
+  },
   mounted(){
     this.$nextTick(()=>{ this.animation() });
   },
@@ -173,9 +177,9 @@ export default {
   min-height: 100vh;
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#D4B974+0#D4B974+60,8f754f+60,8f754f+100 */
   background: #FFEFCA; /* Old browsers */
-  background: -moz-linear-gradient(left,  #FFEFCA 0%, #FFEFCA 40%, #887456 40%, #887456 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(left,  #FFEFCA 0%,#FFEFCA 40%,#887456 40%,#887456 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to right,  #FFEFCA 0%,#FFEFCA 40%,#887456 40%,#887456 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(left,  #FFEFCA 0%, #FFEFCA 30%, #887456 30%, #887456 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  #FFEFCA 0%,#FFEFCA 30%,#887456 30%,#887456 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right,  #FFEFCA 0%,#FFEFCA 30%,#887456 30%,#887456 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#FFEFCA', endColorstr='#887456',GradientType=1 ); /* IE6-9 */
 }
 
@@ -201,7 +205,7 @@ export default {
   top: 30%;
   left: 5%;
   transform: translate(-5%, -30%);
-  font-size: 3rem;
+  font-size: 2rem;
   color: #006C5D;
   max-width: 860px;
 }
