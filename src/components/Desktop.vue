@@ -21,7 +21,7 @@
        -->
 
       <v-row>
-        <v-col col="12" sm="4" md="4">
+        <v-col col="12" md="3">
           <div class="big-text">
             <h2>Sandiego Hills</h2>
             <span class="small-text">Memorial Park</span>
@@ -38,79 +38,228 @@
           </div>
         </v-col>
 
-        <v-col col="12" sm="8" md="8" class="carousel-section">
+        <v-col col="12" md="9" class="carousel-section">
           <v-row style="margin-top:40px">
-            <v-col col="12" md="11">
+            <v-col col="12" md="12">
               <div v-if="showData">
-                <v-row>
-                  <v-col cold=12 md="9">
-                    <div v-if="this.showDetails === 'Gallery'">
-                      <v-row>
-                        <v-col
-                          v-for="(image,i) in data.images"
-                          :key="i"
-                          class="d-flex child-flex"
-                          cols="3"
-                        >
-                          <v-img
-                            :src="image.src"
-                            aspext-ratio="1"
-                            class="grey lighten-2"
-                          ></v-img>
-                        </v-col>
-                      </v-row>
-                    </div>
-
-
-                    <div v-else-if="this.showDetails === 'Details'"></div>
-                    <div v-else-if="this.showDetails === 'Booking'"></div>
-                    <div v-else-if="this.showDetails === 'Maps'"></div>
-
-
-                    <div v-else>
-                      <v-row>
-                        <v-col
-                          v-for="(image,i) in data.images"
-                          :key="i"
-                          class="d-flex child-flex"
-                          cols="3"
-                        >
-                          <v-img
-                            :src="image.src"
-                            class="grey lighten-2"
-                          ></v-img>
-                        </v-col>
-                      </v-row>
-                    </div>
-
-                  </v-col>
-                  <v-col cold=12 md="3">
+                <v-row style="margin:0 40px 40px 40px">
+                  <v-col cols="12" md="12">
                     <v-card
-                      class="mx-auto"
                       height="560"
-                      color="#887456"
-                      elevation="0"
                     >
-                      <v-list rounded color="#887456">
-                        <v-subheader style="font-size:18px; font-weight:bold; color:#FFEFCA">{{data.title}}</v-subheader>
-                        <v-list-item-group
-                          v-model="selectedItem"
-                          color="#FFEFCA"
-                        >
-                          <v-list-item
-                            v-for="(item, i) in items"
-                            :key="i"
-                            @click="showDetailType(item.text)"
-                          >
-                            <v-list-item-icon>
-                              <v-icon v-text="item.icon"></v-icon>
-                            </v-list-item-icon>
-                            <v-list-item-content>
-                              <v-list-item-title v-text="item.text"></v-list-item-title>
-                            </v-list-item-content>
-                          </v-list-item>
-                        </v-list-item-group>
-                      </v-list>
+                      <v-toolbar
+                        flat
+                        color="#006C5D"
+                        dark
+                      >
+                        <v-toolbar-title>{{this.data.title}}</v-toolbar-title>
+                      </v-toolbar>
+                      <v-tabs
+                        vertical
+                        background-color="#006C5D"
+                        color="#FFEFCA"  
+                      >
+                        <v-tab>
+                          Universal
+                        </v-tab>
+
+                        <v-tab>
+                          Muslim
+                        </v-tab>
+
+                        <v-tab>
+                          Chinese
+                        </v-tab>
+
+                        <v-tab-item>
+                          <v-card flat>
+                            <v-container fluid>
+                              <v-data-iterator
+                                :items="items"
+                                :items-per-page.sync="itemsPerPage"
+                                :page.sync="page"
+                                :search="search"
+                                :sort-by="sortBy.toLowerCase()"
+                                :sort-desc="sortDesc"
+                                hide-default-footer
+                                style="background-color:#FFEFCA"
+                              >
+                                <template v-slot:header>
+                                  <v-toolbar
+                                    dark
+                                    color="#006C5D"
+                                    class="mb-1"
+                                  >
+                                    <v-text-field
+                                      v-model="search"
+                                      clearable
+                                      flat
+                                      solo-inverted
+                                      hide-details
+                                      prepend-inner-icon="mdi-magnify"
+                                      label="Search"
+                                    >
+                                    </v-text-field>
+                                    <template v-if="$vuetify.breakpoint.mdAndUp">
+                                      <v-spacer></v-spacer>
+                                      <v-select
+                                        v-model="sortBy"
+                                        flat
+                                        solo-inverted
+                                        hide-details
+                                        :items="keys"
+                                        prepend-inner-icon="mdi-magnify"
+                                        label="Sort by"
+                                      ></v-select>
+                                      <v-spacer></v-spacer>
+                                      <v-btn-toggle
+                                        v-model="sortDesc"
+                                        mandatory
+                                      >
+                                        <v-btn
+                                          depressed
+                                          color="#006C5D"
+                                          :value="false"
+                                        >
+                                          <v-icon>mdi-arrow-up</v-icon>
+                                        </v-btn>
+
+                                        <v-btn
+                                          depressed
+                                          color="#006C5D"
+                                          :value="true"
+                                        >
+                                          <v-icon>mdi-arrow-down</v-icon>
+                                        </v-btn>
+                                      </v-btn-toggle>
+                                    </template>
+                                  </v-toolbar>
+                                </template>
+
+                                <template v-slot:default="props">
+                                  <v-row style="margin-left:8px">
+                                    <v-col
+                                      v-for="item in props.items"
+                                      :key="item.id"
+                                      cols="12"
+                                      md="3"
+                                    >
+                                      <v-card width="300" height="420" style="margin: 4px 0">
+                                        <v-card-title class="subheading font-weight-bold">
+                                          {{ item.mansion }}
+                                        </v-card-title>
+
+                                        <v-divider></v-divider>
+                                        <v-img
+                                          :src="item.src"
+                                        />
+
+                                        <v-list dense>
+                                          <v-list-item
+                                            v-for="(key, index) in filteredKeys"
+                                            :key="index"
+                                          >
+                                            <v-list-item-content :class="{ 'green--text': sortBy === key}">
+                                              {{ key }}:
+                                            </v-list-item-content>
+                                            <v-list-item-content
+                                              class="align-end"
+                                              :class="{ 'green--text': sortBy === key }"
+                                            >
+                                              {{ item[key.toLowerCase()]}}
+                                            </v-list-item-content>
+                                          </v-list-item>
+                                        </v-list>
+                                      </v-card>
+                                    </v-col>
+                                  </v-row>
+                                </template>
+
+                                <template v-slot:footer>
+                                  <v-row
+                                    class="mt-2"
+                                    align="center"
+                                    justify="center"
+                                  >
+                                    <span class="grey--text">Items per page</span>
+                                    <v-menu offset-y>
+                                      <template v-slot:activator="{ on, attrs }">
+                                        <v-btn
+                                          dark
+                                          text
+                                          color="primary"
+                                          v-bind="attrs"
+                                          v-on="on"
+                                        >
+                                          {{ itemsPerPage }}
+                                          <v-icon>mdi-chevron-down</v-icon>
+                                        </v-btn>
+                                      </template>
+
+                                      <v-list>
+                                        <v-list-item
+                                          v-for="(number, index) in itemsPerPageArray"
+                                          :key="index"
+                                          @click="updateItemsPerPage(number)"
+                                        >
+                                          <v-list-item-title>{{ number }}</v-list-item-title>
+                                        </v-list-item>
+                                      </v-list>
+                                    </v-menu>
+
+                                    <v-spacer></v-spacer>
+
+                                    <span
+                                      class="mr-4"
+                                      grey--text
+                                    >
+                                      Page {{ page }} of {{ numberOfPages }}
+                                    </span>
+                                    <v-btn
+                                      fab
+                                      dark
+                                      color="#006C5D"
+                                      class="mr-1"
+                                      @click="formerPage"
+                                      small
+                                    >
+                                      <v-icon>mdi-chevron-left</v-icon>
+                                    </v-btn>
+
+                                    <v-btn
+                                      fab
+                                      dark
+                                      color="#006C5D"
+                                      class="ml-1"
+                                      @click="nextPage"
+                                      small
+                                    >
+                                      <v-icon>mdi-chevron-right</v-icon>
+                                    </v-btn>
+                                  </v-row>
+                                </template>
+
+                              </v-data-iterator>
+                            </v-container>
+                          </v-card>
+                        </v-tab-item>
+
+                        <v-tab-item>
+                          <v-card flat>
+                            <v-card-text>
+                              <p>harga Muslim</p>
+                            </v-card-text>
+                          </v-card>
+                        </v-tab-item>
+
+                        <v-tab-item>
+                          <v-card flat>
+                            <v-card-text>
+                              <p>harga Chinese</p>
+                            </v-card-text>
+                          </v-card>
+                        </v-tab-item>
+                      </v-tabs>
                     </v-card>
                   </v-col>
                 </v-row>
@@ -118,24 +267,25 @@
               <div v-else>
                 <v-img
                   :src="this.imgShow"
-                  height="560"
+                  height="600"
+                  max-width="1320"
+                  style="margin-left:40px"
                 ></v-img>
               </div>
             </v-col>
             <v-col col="12" md="1"></v-col>
           </v-row>
           <v-row>
-            <v-col col="12" md="1"></v-col>
-          
-            <v-col col="12" md="10">
+            <v-col col="12" md="12">
               <carousel-3d>
                 <slide
                   v-for="(slide,i) in cards"
                   :index="i"
                   :key="slide.id"
+                  style="border-radius: 10px"
                 >
                   <template slot-scope="{index, isCurrent, leftIndex, rightIndex}" >
-                    <v-card @click="openCard(slide.id)" height="100%">
+                    <v-card @click="openCard(slide.id)" height="100%" class="cardSlideCarousel">
                     <img
                       :data-index="index"
                       :class="{current: isCurrent, onLeft: (leftIndex >= 0), onRight: (rightIndex >= 0)}"
@@ -148,7 +298,6 @@
                 </slide>
               </carousel-3d>
             </v-col>
-            <v-col col="12" md="1"></v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -201,8 +350,8 @@ export default {
       ],
     cardData: [
         {
-          id:1,
-          images:[
+          id: 1,
+          images: [
             {
               src: require('@/assets/pasangan.png')
             },
@@ -216,43 +365,171 @@ export default {
               src: require('@/assets/peak.png')
             },
           ],
-          title:'Promo Paket Pasangan',
-          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+          title: 'Promo Paket Pasangan',
+          text: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+        },
+        {
+          id: 2,
+          images: [
+            {
+              src: require('@/assets/pasangan.png')
+            },
+            {
+              src: require('@/assets/family.png')
+            },
+            {
+              src: require('@/assets/single.png')
+            },
+            {
+              src: require('@/assets/peak.png')
+            },
+          ],
+          title: 'Promo Paket Family',
+          text: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+        },
+        {id: 3},
+        {id: 4},
+        {id: 5},
+        {id: 6},
+      ],
+      showData: false,
+      data: [],
+      showDetails: '',
+      itemsPerPageArray: [4,8,12],
+      search: '',
+      filter: {},
+      sortDesc: false,
+      page: 1,
+      itemsPerPage: 4,
+      sortBy: 'Mansion',
+      keys: [
+        'Mansion',
+        'Pembayaran',
+        'Harga',
+        'Ukuran',
+      ],
+      items: [
+        {
+          id:1,
+          mansion: 'Serenity-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cicil',
+          harga: 'Rp 63.476.600',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/single.png')
         },
         {
           id:2,
-          images:[
-            {
-              src: require('@/assets/pasangan.png')
-            },
-            {
-              src: require('@/assets/family.png')
-            },
-            {
-              src: require('@/assets/single.png')
-            },
-            {
-              src: require('@/assets/peak.png')
-            },
-          ],
-          title:'Promo Paket Family',
-          text:'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
+          mansion: 'Serenity-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cash',
+          harga: 'Rp 57.128.940',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/single.png')
         },
-        {id:3},
-        {id:4},
-        {id:5},
-        {id:6},
-      ],
-      showData:false,
-      data:[],
-      selectedItem:0,
-      items:[
-        { text: 'Gallery', icon: 'mdi-panorama'},
-        { text: 'Details', icon: 'mdi-details'},
-        { text: 'Booking', icon: 'mdi-book-open'},
-        { text: 'Maps', icon: 'mdi-google-maps'},
-      ],
-      showDetails:''
+        {
+          id:3,
+          mansion: 'Serenity-Pasangan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cicil',
+          harga: 'Rp 110.000.000',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/pasangan.png')
+        },
+        {
+          id:4,
+          mansion: 'Serenity-Pasangan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cash',
+          harga: 'Rp 99.000.000',
+          ukuran: '1.1m x 1.3',
+          src:require('@/assets/pasangan.png')
+        },
+        {
+          id:5,
+          mansion: 'Grace-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cicil',
+          harga: 'Rp 63.476.600',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/family.png')
+        },
+        {
+          id:6,
+          mansion: 'Grace-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cash',
+          harga: 'Rp 57.128.940',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/family.png')
+        },
+        {
+          id:7,
+          mansion: 'Grace-Pasangan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cicil',
+          harga: 'Rp 110.000.000',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/private.png')
+        },
+        {
+          id:8,
+          mansion: 'Grace-Pasangan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cash',
+          harga: 'Rp 99.000.000',
+          ukuran: '1.1m x 3m',
+          src:require('@/assets/private.png')
+        },
+        {
+          id:9,
+          mansion: 'Serenity New-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cicil',
+          harga: 'Rp 101.750.000',
+          ukuran: '1.5m x 3m',
+          src:require('@/assets/peak.png')
+        },
+        {
+          id:10,
+          mansion: 'Serenity New-Single',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Single',
+          pembayaran: 'Cash',
+          harga: 'Rp 91.575.000',
+          ukuran: '1.5m x 3m',
+          src:require('@/assets/peak.png')
+        },
+        {
+          id:11,
+          mansion: 'Serenity New-Pasnagan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cicil',
+          harga: 'Rp 185.000.000',
+          ukuran: '1.5m x 3m',
+          src:require('@/assets/semiprivate.png')
+        },
+        {
+          id:12,
+          mansion: 'Serenity New-Pasangan',
+          nuansa: 'Kristen/Katolik/Buddha',
+          tipe: 'Pasangan',
+          pembayaran: 'Cash',
+          harga: 'Rp 166.500.000',
+          ukuran: '1.5m x 1.3',
+          src:require('@/assets/semiprivate.png')
+        },
+      ]
   }),
   components: {
     Carousel3d,
@@ -261,8 +538,16 @@ export default {
   mounted(){
     this.$nextTick(()=>{ this.animation() });
   },
+  computed: {
+    numberOfPages () {
+      return Math.ceil(this.items.length / this.itemsPerPage)
+    },
+    filteredKeys () {
+      return this.keys.filter(key => key !== 'Mansion')
+    }
+  },
   methods: {
-      animation() {
+      animation () {
       const tl = gsap.timeline({ defaults: {ease: "power1.out" }})
       tl.to(".text", { y: "0%", duration: 1.5, stagger: 0.3 });
       tl.to(".slider", {y: "-100%", duration: 1.5, delay: 0.5 });
@@ -274,18 +559,22 @@ export default {
       tl.fromTo(".detail-text",{ opacity: 0}, { opacity: 1, duration: 1 });
       tl.fromTo(".carousel-section",{ opacity: 0}, { opacity: 1, duration: 1 });
     },
-    changeImage(item) {
+    changeImage( item) {
       console.log(item)
     },
-    openCard(cardId) {
+    openCard (cardId) {
       this.data = this.cardData.find(card => card.id === cardId)
       this.showData = true
       console.log(this.data)
     },
-    showDetailType(buttonName) {
-      console.log(buttonName)
-      this.showDetails=buttonName
-      console.log(this.showDetails)
+    nextPage () {
+      if (this.page + 1 <= this.numberOfPages) this.page += 1
+    },
+    formerPage () {
+      if (this.page -1 >= 1) this.page -= 1
+    },
+    updateItemsPerPage (number) {
+      this.itemsPerPage = number
     }
   }
 };
@@ -415,5 +704,22 @@ export default {
 .detail3-pemakaman {
   padding: 0 20px 0 0;
   margin: 0 auto;
+}
+
+.cardSlideCarousel{
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.slide-fade-enter-active {
+  transition: all 5s ease;
+}
+.slide-fade-leave-active {
+  transition: all 1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>
